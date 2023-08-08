@@ -1,4 +1,7 @@
 ﻿using ASP.NET_RazorPage_P8.Models;
+using ASP.NET_RazorPage_P8.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET_RazorPage_P8
@@ -23,10 +26,57 @@ namespace ASP.NET_RazorPage_P8
                 string connectString = Configuration.GetConnectionString("MyBlogContext");
                 options.UseSqlServer(connectString);
             });
-        }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            //---------Đăng ký các dịch vụ của Identity -----------
+            services.AddIdentity<AppUser, IdentityRole>()
+                    .AddEntityFrameworkStores<MyBlogContext>()
+                    .AddDefaultTokenProviders();
+
+            // --------- Sử dụng giao diện mặc định (UI) của Identity ----------
+            //Đảm bảo có tích hợp package: Microsoft.AspNetCore.Identity.UI
+            //Để có thể render được các trang razor page mặc định, như Login, Logout, Sign up...
+            //Ví dụ các URL: /Identity/Account/Login, /Identity/Account/Manage,...
+            //services.AddDefaultIdentity<AppUser>()
+            //        .AddEntityFrameworkStores<MyBlogContext>()
+            //        .AddDefaultTokenProviders();
+
+
+            // --------- Một số thiết lập cho các dịch vụ Identity -------------
+            // Truy cập IdentityOptions
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Thiết lập về Password
+                options.Password.RequireDigit = false; // Không bắt phải có số
+                options.Password.RequireLowercase = false; // Không bắt phải có chữ thường
+                options.Password.RequireNonAlphanumeric = false; // Không bắt ký tự đặc biệt
+                options.Password.RequireUppercase = false; // Không bắt buộc chữ in
+                options.Password.RequiredLength = 3; // Số ký tự tối thiểu của password
+                options.Password.RequiredUniqueChars = 1; // Số ký tự riêng biệt
+
+                // Cấu hình Lockout - khóa user
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // Khóa 5 phút
+                options.Lockout.MaxFailedAccessAttempts = 5; // Thất bại 5 lầ thì khóa
+                options.Lockout.AllowedForNewUsers = true;
+
+                // Cấu hình về User.
+                options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;  // Email là duy nhất
+
+                // Cấu hình đăng nhập.
+                options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
+                options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
+
+            });
+
+            // --------- Tạo dịch vụ IMailSender sử dụng bởi Identity ----------
+            services.AddOptions();
+            var mailsetting = Configuration.GetSection("MailSettings");
+            services.Configure<MailSettings>(mailsetting);
+            services.AddSingleton<IEmailSender, SendMailService>();
+        }
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -44,12 +94,25 @@ namespace ASP.NET_RazorPage_P8
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
+
+            // *********** Sử dụng các dịch vụ của Identity phục vụ cho việc Login, Register
+            //Ví dụ: Nếu chưa Login thì hiện url để Login còn Login rồi thì không hiện chẳng hạn...
+            //SignInManager<AppUser> s;
+            //UserManager<AppUser> u;
+            //Từ 2 dịch vụ này ta có thể đọc thông tin từ 1 user, kiểm tra xem có user đăng nhập không
+            //user đấy đăng nhập thì thông tin user đăng nhập là gì
+            //>>>>>>>>Để sử dụng được 2 dịch vụ này thì chúng ta chỉ việc inject vào các PageModel
+            //        giống như inject các dịch vụ khác kể cả ở trong View ta cũng có thể inject
+
+            // >>>>>>> Để inject các dịch vụ vào trực tiếp View của các RazorPage hay các Action Controller...
+            //         thì dùng chỉ thị @inject <Kieu-dich-vu-muon-inject> <Ten-dich-vu> 
         }
     }
 }

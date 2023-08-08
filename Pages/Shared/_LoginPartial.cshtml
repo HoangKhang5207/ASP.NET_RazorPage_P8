@@ -1,0 +1,54 @@
+﻿
+
+@*
+
+ --------- Xây dụng partial  _LoginPartial.cshtml, menu thông tin đăng nhập ---------
+
+>>>>>>> Để inject các dịch vụ vào trực tiếp View của các RazorPage hay các Action Controller...
+        thì dùng chỉ thị @inject <Kieu-dich-vu-muon-inject> <Ten-dich-vu>
+
+>>>>>>> Một vấn đề nữa là: trong các Controller, PageModel, View đều có một property có tên là User
+        có kiểu là ClaimsPrincipal mà chứa thông tin của User
+		thuộc tính này được thiết lập trong mỗi truy vấn do 2 Middleware Authentication và Authorization
+
+		Từ thuộc tính User ta có thể dụng được dịch vụ SignInManager để kiểm tra đây là User đăng nhập hay ko phải?
+
+*@
+
+@using Microsoft.AspNetCore.Identity
+@using ASP.NET_RazorPage_P8.Models
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    //SignInManager.IsSignedIn(User) -> true: user đã đăng nhập, false: ngược lại
+    //UserManager.GetUserName(User)
+}
+
+
+<ul class="navbar-nav">
+
+	@if (SignInManager.IsSignedIn(User))
+	{
+		<li class="nav-item">
+			<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">
+				Xin chào @UserManager.GetUserName(User)
+			</a>
+		</li>
+
+		<li class="nav-item">
+			<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout">Đăng xuất</a>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item">
+			<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Đăng ký</a>
+		</li>
+
+		<li class="nav-item">
+			<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
+		</li>
+	}
+</ul>
