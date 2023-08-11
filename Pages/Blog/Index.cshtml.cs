@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ASP.NET_RazorPage_P8.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.NET_RazorPage_P8.Pages_Blog
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly ASP.NET_RazorPage_P8.Models.MyBlogContext _context;

@@ -3,6 +3,7 @@ using ASP.NET_RazorPage_P8.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ASP.NET_RazorPage_P8
 {
@@ -66,6 +67,7 @@ namespace ASP.NET_RazorPage_P8
                 // Cấu hình đăng nhập.
                 options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
                 options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
+                options.SignIn.RequireConfirmedAccount = true;
 
             });
 
@@ -74,7 +76,18 @@ namespace ASP.NET_RazorPage_P8
             var mailsetting = Configuration.GetSection("MailSettings");
             services.Configure<MailSettings>(mailsetting);
             services.AddSingleton<IEmailSender, SendMailService>();
-        }
+
+            // --------- Khi sử dụng Attribute để xác định quyền truy cập cho các Razor Page ---------
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Thiết lập đường dẫn tới trang Login của app
+                options.LoginPath = "/login/";
+                //Thiết lập đường dẫn tới trang Logout của app
+                options.LogoutPath = "/logout/";
+                //Thiết lập đường dẫn tới trang Khi User bị cấm truy cập
+                options.AccessDeniedPath = "/khongduoctruycap.html";
+            });
+		}
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

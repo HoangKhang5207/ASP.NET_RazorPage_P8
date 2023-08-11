@@ -1,11 +1,11 @@
-﻿@page
+﻿@page "/can-xac-thuc-email-dang-ky.html"
 @model RegisterConfirmationModel
 @{
-    ViewData["Title"] = "Register confirmation";
+    ViewData["Title"] = "Thông báo xác thực email";
 }
 
 <h1>@ViewData["Title"]</h1>
-@{
+@*@{
     if (@Model.DisplayConfirmAccountLink)
     {
 <p>
@@ -19,5 +19,8 @@
         Please check your email to confirm your account.
 </p>
     }
-}
+}*@
 
+<p>
+    Bạn cần truy cập vào email để biết cách xác thực tài khoản
+</p>

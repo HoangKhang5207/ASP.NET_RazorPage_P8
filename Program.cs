@@ -1,6 +1,7 @@
 ﻿// ========= BÀI 58: (ASP.NET Razor 09) Tích hợp Entity Framework vào ASP.NET, làm việc với SQL Server ============
 // ========= BÀI 59: (ASP.NET Razor 10) Tạo các trang CRUD làm việc với DbContext EF, SQL Server trong ASP.NET ==============
 // ========= BÀI 60: (ASP.NET Razor 11) Sử dụng Identity xác thực người dùng, chức năng đăng nhập tài khoản ============
+// ========= BÀI 61: (ASP.NET Razor 12) Tùy biến trang đăng ký tài khoản và xác thực email ============
 using ASP.NET_RazorPage_P8.Models;
 using Microsoft.AspNetCore.Hosting;
 
@@ -150,5 +151,15 @@ namespace ASP.NET_RazorPage_P8
     Phát sinh code của các trang Login, Logout, Register,... của Identity để có thể tùy biến
     các View, PageModel tùy theo sở thích của chúng ta
     ***** Sử dụng câu lệnh sau: dotnet aspnet-codegenerator identity -dc ASP.NET_RazorPage_P8.Models.MyBlogContext 
+    
+    ==============================================================================================================================
+    -------------- Giới thiệu và tùy biến trang đăng ký tài khoản mới -----------------
+    *** Khi sử dụng Attribute để xác định quyền truy cập cho các Razor Page thì trong file Startup.cs
+        ta phải cấu hình thêm cho phương thức ConfigureServices
+        >>> Ví dụ: muốn truy cập vào trang Pages/Blog/Index thì bắt buộc phải Login
+    
+       
+       
+    -------------- Xác thực địa chỉ email khi đăng ký tài khoản ---------------
     
 */
