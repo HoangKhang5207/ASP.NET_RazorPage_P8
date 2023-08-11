@@ -2,6 +2,7 @@
 // ========= BÀI 59: (ASP.NET Razor 10) Tạo các trang CRUD làm việc với DbContext EF, SQL Server trong ASP.NET ==============
 // ========= BÀI 60: (ASP.NET Razor 11) Sử dụng Identity xác thực người dùng, chức năng đăng nhập tài khoản ============
 // ========= BÀI 61: (ASP.NET Razor 12) Tùy biến trang đăng ký tài khoản và xác thực email ============
+// ========= BÀI 62: (ASP.NET Razor 13) Tùy biến trang đăng nhập, đăng xuất, lấy lại mật khẩu, khóa tài khoản ============
 using ASP.NET_RazorPage_P8.Models;
 using Microsoft.AspNetCore.Hosting;
 
@@ -161,5 +162,11 @@ namespace ASP.NET_RazorPage_P8
        
        
     -------------- Xác thực địa chỉ email khi đăng ký tài khoản ---------------
+
+    ==============================================================================================================================
+    -------------- Tùy biến trang Login tài khoản, đăng nhập bằng tên tài khoản hoặc email ASP.NET ---------
+    -------------- Lockout, khóa tài khoản sau một số lần đăng nhập thất bại ---------------
+    -------------- Trang đăng xuất tài khoản,  Logout ---------------
+    -------------- Tính năng lấy lại mật khẩu ResetPassword,  ForgotPassword ----------------
     
 */

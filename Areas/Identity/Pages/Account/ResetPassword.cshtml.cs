@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
@@ -52,6 +52,7 @@ namespace ASP.NET_RazorPage_P8.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
+            [Display(Name = "Nhập mật khẩu mới")]
             public string Password { get; set; }
 
             /// <summary>
@@ -59,7 +60,7 @@ namespace ASP.NET_RazorPage_P8.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "Nhập lại mật khẩu")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
@@ -76,7 +77,7 @@ namespace ASP.NET_RazorPage_P8.Areas.Identity.Pages.Account
         {
             if (code == null)
             {
-                return BadRequest("A code must be supplied for password reset.");
+                return BadRequest("Mã token không chính xác.");
             }
             else
             {
@@ -103,6 +104,7 @@ namespace ASP.NET_RazorPage_P8.Areas.Identity.Pages.Account
             }
 
             var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
+            
             if (result.Succeeded)
             {
                 return RedirectToPage("./ResetPasswordConfirmation");
